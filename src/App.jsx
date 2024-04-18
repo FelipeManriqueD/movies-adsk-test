@@ -2,8 +2,10 @@ import { lazy } from 'react';
 import './App.css'
 
 
-const Login = lazy(() => import('./pages/Login'));
-const Home = lazy(() => import('./pages/Home'));
+const Login = lazy(() => import('./pages/Login/Login'));
+const Home = lazy(() => import('./pages/Home/Home'));
+const Detail = lazy(() => import('./pages/Detail/Detail'));
+
 
 function App() {
 
@@ -11,6 +13,7 @@ function App() {
     <>
       <Login/>
       <Home/>
+      <Detail/>
     </>
   )
 }
