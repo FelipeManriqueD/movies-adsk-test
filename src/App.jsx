@@ -1,11 +1,16 @@
+import { lazy } from 'react';
 import './App.css'
-import Login from './pages/Login/Login'
+
+
+const Login = lazy(() => import('./pages/Login'));
+const Home = lazy(() => import('./pages/Home'));
 
 function App() {
 
   return (
     <>
       <Login/>
+      <Home/>
     </>
   )
 }

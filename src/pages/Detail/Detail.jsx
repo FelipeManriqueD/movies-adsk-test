@@ -1,4 +1,4 @@
-export default function Detail() {
+export function Detail() {
   return (
     <div>Detail</div>
   )
