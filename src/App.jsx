@@ -1,21 +1,20 @@
-import { lazy } from 'react';
-import './App.css'
-
-
-const Login = lazy(() => import('./pages/Login/Login'));
-const Home = lazy(() => import('./pages/Home/Home'));
-const Detail = lazy(() => import('./pages/Detail/Detail'));
-
+import "./App.css";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import AppRouter from "./router/AppRouter";
 
 function App() {
-
   return (
     <>
-      <Login/>
-      <Home/>
-      <Detail/>
+      <Header />
+      <main>
+        <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+          <AppRouter />
+        </div>
+      </main>
+      <Footer />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
