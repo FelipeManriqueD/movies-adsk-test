@@ -1,24 +1,27 @@
 import { useParams } from "react-router-dom";
-import { useFetch } from "../../hooks/useFetch";
-import { apiKey, baseUrl } from "../../utils/constants";
 import Loading from "../../components/Loading/Loading";
 import { imageBaseURL } from "../../utils/constants";
+import { useMovies } from "../../hooks/useMovies";
+import { useEffect } from "react";
 
 export default function Detail() {
   let { id } = useParams();
-  const { data, loading, error } = useFetch({
-    url: `${baseUrl}/movie/${id}?api_key=${apiKey}`,
-  });
+  const { movies, loading, error, getMovieByID } = useMovies({});
+  const movie = movies[0];
 
-  if (loading && !data.length) {
+  useEffect(() => {
+    getMovieByID({ movieID: id });
+  }, [id]);
+
+  if (loading && !movie) {
     return <Loading />;
   }
 
-  if (!loading && !data.length && error) {
+  if (!loading && !movie && error) {
     return <p>Error</p>;
   }
 
-  const { title, poster_path, overview } = data;
+  const { title, poster_path, overview } = movie;
 
   return (
     <div className="bg-gray-100">

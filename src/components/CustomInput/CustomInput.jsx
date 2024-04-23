@@ -1,5 +1,6 @@
+import PropTypes from "prop-types";
 export default function CustomInput({
-  type,
+  type = "text",
   name,
   value,
   onChange,
@@ -28,3 +29,13 @@ export default function CustomInput({
     </>
   );
 }
+
+CustomInput.propTypes = {
+  type: PropTypes.string,
+  name: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onChange: PropTypes.func,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  label: PropTypes.string,
+  labelClassName: PropTypes.string,
+};

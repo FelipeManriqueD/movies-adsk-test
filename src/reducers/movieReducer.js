@@ -10,6 +10,11 @@ const movieReducer = (state = initialState, action) => {
         ...state,
         movies: [...state.movies, action.payload],
       };
+    case "FILTER_MOVIES":
+      return {
+        ...state,
+        movies: [...state.movies, action.payload],
+      };
     default:
       return state;
   }
