@@ -12,12 +12,16 @@ export function useMovies({ search = "" }) {
   const [error, setError] = useState(null);
   const previousSearch = useRef(search);
 
-  const getAllMovies = async (page) => {
+  const getAllMovies = async ({ page, reset = false }) => {
     try {
       setLoading(true);
       setError(null);
       const allMovies = await getMovies({ currentPage: page });
-      setMovies(allMovies);
+      if (!reset) {
+        setMovies((prevState) => [...prevState, ...allMovies]);
+      } else {
+        setMovies(allMovies);
+      }
     } catch (e) {
       setError(e.message);
     } finally {

@@ -36,18 +36,19 @@ export default function Home() {
     const { value } = event.target;
     updateSearch(value);
     debouncedGetMovies(value);
-    setIsSuggestionSelected((prevsState) => !prevsState);
 
     if (!value) {
-      getAllMovies(page);
+      getAllMovies({ page, reset: true });
     }
+
+    setIsSuggestionSelected((prevsState) => !prevsState);
   };
 
   const handleScroll = useCallback(() => {
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
-    if (scrollY + windowHeight >= documentHeight - 100) {
+    if (scrollY + windowHeight >= documentHeight) {
       setPage((prevPage) => prevPage + 1);
     }
   }, []);
@@ -77,10 +78,10 @@ export default function Home() {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [handleScroll]);
 
   useEffect(() => {
-    getAllMovies(page);
+    getAllMovies({ page });
   }, [page]);
 
   if (loading && !movies.length) {
