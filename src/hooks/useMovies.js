@@ -7,6 +7,7 @@ import {
 
 export function useMovies({ search = "" }) {
   const [movies, setMovies] = useState([]);
+  const [moviesSuggest, setMoviesSuggest] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const previousSearch = useRef(search);
@@ -32,7 +33,7 @@ export function useMovies({ search = "" }) {
       setError(null);
       previousSearch.current = search;
       const newMovies = await searchMovies({ search });
-      setMovies(newMovies);
+      setMoviesSuggest(newMovies);
     } catch (e) {
       setError(e.message);
     } finally {
@@ -59,6 +60,7 @@ export function useMovies({ search = "" }) {
 
   return {
     movies,
+    moviesSuggest,
     getAllMovies,
     getMoviesBySearch,
     getMovieByID,

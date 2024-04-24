@@ -1,29 +1,15 @@
-import { useCallback, useState } from "react";
+import PropTypes from 'prop-types';
 import CustomInput from "../CustomInput/CustomInput";
-import { useSearch } from "../../hooks/useSearch";
-import { debounce } from "../../utils/utils";
-import { useMovies } from "../../hooks/useMovies";
 import Loading from "../Loading/Loading";
 
-export default function TypeaheadInput({ onClickSuggestion }) {
-  const { search, updateSearch } = useSearch();
-  const { movies, loading, getMoviesBySearch } = useMovies({ search });
-  const [isSugegstionSelected, setIsSuggestionSelected] = useState(true);
-
-  const debouncedGetMovies = useCallback(
-    debounce((search) => {
-      if (search === "") return null;
-      getMoviesBySearch({ search });
-    }, 300),
-    [getMoviesBySearch]
-  );
-
-  const handleChange = async (event) => {
-    const { value } = event.target;
-    updateSearch(value);
-    debouncedGetMovies(value);
-    setIsSuggestionSelected((prevsState) => !prevsState);
-  };
+export default function TypeaheadInput({
+  search,
+  handleChange,
+  movies,
+  isSugegstionSelected,
+  loading,
+  onClickSuggestion,
+}) {
 
   return (
     <div className="relative">
@@ -42,15 +28,12 @@ export default function TypeaheadInput({ onClickSuggestion }) {
         }`}
       >
         {loading && !movies.length && <Loading type="spinner" />}
-        {isSugegstionSelected &&
+        {isSugegstionSelected && search &&
           movies.map(({ id, title }) => (
             <div
               key={id}
               className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-              onClick={() => {
-                onClickSuggestion(movies);
-                setIsSuggestionSelected((prevsState) => !prevsState);
-              }}
+              onClick={() => onClickSuggestion(movies, title)}
             >
               {title}
             </div>
@@ -59,3 +42,12 @@ export default function TypeaheadInput({ onClickSuggestion }) {
     </div>
   );
 }
+
+TypeaheadInput.propTypes = {
+  search: PropTypes.string,
+  handleChange: PropTypes.func,
+  movies: PropTypes.array,
+  isSugegstionSelected: PropTypes.bool,
+  loading: PropTypes.bool,
+  onClickSuggestion: PropTypes.func
+};

@@ -2,18 +2,55 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loading from "../../components/Loading/Loading";
 import Card from "../../components/Card/Card";
-import { truncateText } from "../../utils/utils";
+import { debounce, truncateText } from "../../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import TypeaheadInput from "../../components/TypeaheadInput/TypeaheadInput";
 import { useMovies } from "../../hooks/useMovies";
+import { useSearch } from "../../hooks/useSearch";
 
 export default function Home() {
   const favoriteMovies = useSelector((state) => state.movies);
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
-  const { movies, loading, error, getAllMovies, getMoviesFiltered } = useMovies(
-    {}
+  const { search, updateSearch } = useSearch();
+  const [isSugegstionSelected, setIsSuggestionSelected] = useState(false);
+  const {
+    movies,
+    moviesSuggest,
+    loading,
+    error,
+    getAllMovies,
+    getMoviesFiltered,
+    getMoviesBySearch,
+  } = useMovies({ search });
+
+  const debouncedGetMovies = useCallback(
+    debounce((search) => {
+      if (search === "") return null;
+      getMoviesBySearch({ search });
+    }, 300),
+    [getMoviesBySearch]
   );
+
+  const handleChange = async (event) => {
+    const { value } = event.target;
+    updateSearch(value);
+    debouncedGetMovies(value);
+    setIsSuggestionSelected((prevsState) => !prevsState);
+
+    if (!value) {
+      getAllMovies(page);
+    }
+  };
+
+  const handleScroll = useCallback(() => {
+    const scrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    if (scrollY + windowHeight >= documentHeight - 100) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  }, []);
 
   function addToFavoriteHandler(event, movieID) {
     event.preventDefault();
@@ -31,18 +68,11 @@ export default function Home() {
       : true;
   }
 
-  function onClickSuggestion(moviesFiltered) {
+  function onClickSuggestion(moviesFiltered, title) {
+    updateSearch(title);
     getMoviesFiltered({ moviesFiltered });
+    setIsSuggestionSelected((prevsState) => !prevsState);
   }
-
-  const handleScroll = useCallback(() => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop !==
-      document.documentElement.offsetHeight
-    )
-      return;
-    setPage((prevPage) => prevPage + 1);
-  }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -65,7 +95,14 @@ export default function Home() {
     <>
       <div className="flex items-center mb-6 justify-between">
         <h2 className="text-4xl font-extrabold dark:text-white">All Movies</h2>
-        <TypeaheadInput onClickSuggestion={onClickSuggestion} />
+        <TypeaheadInput
+          onClickSuggestion={onClickSuggestion}
+          movies={moviesSuggest}
+          loading={loading}
+          handleChange={handleChange}
+          isSugegstionSelected={isSugegstionSelected}
+          search={search}
+        />
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4" role="grid">
         {movies.length > 0 &&

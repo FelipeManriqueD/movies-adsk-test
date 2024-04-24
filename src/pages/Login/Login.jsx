@@ -28,7 +28,6 @@ export default function Login() {
       payload: { [name]: value },
     });
   }
-  console.log(userLogin)
 
   return (
     <div className="justify-center px-6 py-12 lg:px-8">

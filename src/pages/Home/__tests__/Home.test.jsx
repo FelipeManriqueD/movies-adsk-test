@@ -40,10 +40,12 @@ describe("Home", () => {
 
     useMoviesSpy.mockReturnValueOnce({
       movies: [],
+      moviesSuggest: [],
       loading: false,
       error: "Some error message",
       getAllMovies: vi.fn(),
       getMoviesFiltered: vi.fn(),
+      getMoviesBySearch: vi.fn(),
     });
 
     render(<MockHome store={store} />);
@@ -53,11 +55,13 @@ describe("Home", () => {
   it("renders the Home component with movies", () => {
     const useMoviesSpy = vi.spyOn(useMoviesHooks, "useMovies");
     useMoviesSpy.mockReturnValueOnce({
-      isLoading: false,
-      error: null,
       movies: moviesMock.results,
+      moviesSuggest: moviesMock.results,
+      loading: false,
+      error: null,
       getAllMovies: vi.fn(),
       getMoviesFiltered: vi.fn(),
+      getMoviesBySearch: vi.fn(),
     });
 
     render(<MockHome store={store} />);
@@ -72,38 +76,42 @@ describe("Home", () => {
   it("navigates to specific movie once is clicked", () => {
     const useMoviesSpy = vi.spyOn(useMoviesHooks, "useMovies");
     useMoviesSpy.mockReturnValueOnce({
-      isLoading: false,
-      error: null,
       movies: moviesMock.results,
+      moviesSuggest: moviesMock.results,
+      loading: false,
+      error: null,
       getAllMovies: vi.fn(),
       getMoviesFiltered: vi.fn(),
+      getMoviesBySearch: vi.fn(),
     });
 
     render(<MockHome store={store} />);
 
-    const cardLink = screen.getByRole('link', { name: /No Way Up/i });
+    const cardLink = screen.getByRole("link", { name: /No Way Up/i });
 
-    fireEvent.click(cardLink)
-    
+    fireEvent.click(cardLink);
+
     expect(window.location.pathname).toBe(`/home/1096197`);
   });
 
   it("adds specific movie to favorite", () => {
     const useMoviesSpy = vi.spyOn(useMoviesHooks, "useMovies");
     useMoviesSpy.mockReturnValueOnce({
-      isLoading: false,
-      error: null,
       movies: moviesMock.results,
+      moviesSuggest: moviesMock.results,
+      loading: false,
+      error: null,
       getAllMovies: vi.fn(),
       getMoviesFiltered: vi.fn(),
+      getMoviesBySearch: vi.fn(),
     });
 
     render(<MockHome store={store} />);
 
     const moviesList = screen.getByRole("grid");
-    const cardButton = moviesList.querySelectorAll('button')[0]
+    const cardButton = moviesList.querySelectorAll("button")[0];
 
-    fireEvent.click(cardButton)
+    fireEvent.click(cardButton);
 
     const actions = store.getActions();
 
