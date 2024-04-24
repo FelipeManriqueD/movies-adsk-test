@@ -34,6 +34,7 @@ export default function TypeaheadInput({
               key={id}
               className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
               onClick={() => onClickSuggestion(movies, title)}
+              role="list"
             >
               {title}
             </div>

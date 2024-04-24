@@ -13,7 +13,7 @@ export default function Home() {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const { search, updateSearch } = useSearch();
-  const [isSugegstionSelected, setIsSuggestionSelected] = useState(false);
+  const [isMovieListSelected, setIsMovieListSelected] = useState(false);
   const {
     movies,
     moviesSuggest,
@@ -41,7 +41,7 @@ export default function Home() {
       getAllMovies({ page, reset: true });
     }
 
-    setIsSuggestionSelected((prevsState) => !prevsState);
+    setIsMovieListSelected((prevsState) => !prevsState);
   };
 
   const handleScroll = useCallback(() => {
@@ -63,16 +63,13 @@ export default function Home() {
   }
 
   function hasFavoriteBtn(movieID) {
-    return favoriteMovies?.movies?.length > 0 &&
-      favoriteMovies.movies.filter(({ id }) => id === movieID).length > 0
-      ? false
-      : true;
+    return !(favoriteMovies?.movies?.filter(({ id }) => id === movieID).length > 0);
   }
 
   function onClickSuggestion(moviesFiltered, title) {
     updateSearch(title);
     getMoviesFiltered({ moviesFiltered });
-    setIsSuggestionSelected((prevsState) => !prevsState);
+    setIsMovieListSelected((prevsState) => !prevsState);
   }
 
   useEffect(() => {
@@ -101,7 +98,7 @@ export default function Home() {
           movies={moviesSuggest}
           loading={loading}
           handleChange={handleChange}
-          isSugegstionSelected={isSugegstionSelected}
+          isSugegstionSelected={isMovieListSelected}
           search={search}
         />
       </div>
