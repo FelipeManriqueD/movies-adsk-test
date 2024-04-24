@@ -21,7 +21,7 @@ export default function Detail() {
     return <p>Error</p>;
   }
 
-  const { title, poster_path, overview } = movie;
+  //const { title, poster_path, overview } = movie;
 
   return (
     <div className="bg-gray-100">
@@ -30,20 +30,20 @@ export default function Detail() {
           <div className="mb-8 md:mb-0">
             <img
               className="object-cover w-full h-96 md:h-auto rounded-t-lg"
-              src={`${imageBaseURL}${poster_path}`}
-              alt={title}
+              src={`${imageBaseURL}${movie?.poster_path}`}
+              alt={movie?.title}
             />
           </div>
           <div>
             <div className="mb-12">
               <h2 className="text-3xl font-extrabold text-gray-900 mb-4">
-                {title}
+                {movie?.title}
               </h2>
               <div className="grid grid-cols-1 gap-8">
                 <div className="bg-white shadow overflow-hidden rounded-lg">
                   <div className="px-4 py-5 sm:px-6">
                     <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                      {overview}
+                      {movie?.overview}
                     </p>
                   </div>
                 </div>

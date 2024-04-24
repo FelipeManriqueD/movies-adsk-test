@@ -11,27 +11,26 @@ function NoResults() {
 }
 
 export default function Favorite() {
-  const favoriteMovies = useSelector((state) => state.movies);
+  const movies = useSelector((state) => state.movies.movies);
+
   return (
     <div>
       <h2 className="text-4xl font-extrabold dark:text-white">
         Favorite movies
       </h2>
-      {!favoriteMovies.movies.length ? (
+      {!movies || movies.length === 0 ? (
         <NoResults />
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {favoriteMovies.movies.map(
-            ({ id, title, overview, poster_path, release_date }) => (
-              <Card
-                key={id}
-                title={title}
-                description={truncateText(overview)}
-                image={poster_path}
-                releaseDate={release_date}
-              />
-            )
-          )}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4" role="grid">
+          {movies.length > 0 && movies.map(({ id, title, overview, poster_path, release_date }) => (
+            <Card
+              key={id}
+              title={title}
+              description={truncateText(overview)}
+              image={poster_path}
+              releaseDate={release_date}
+            />
+          ))}
         </div>
       )}
     </div>

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export default function Header() {
   const user = useSelector((state) => state.login);
@@ -16,15 +16,26 @@ export default function Header() {
         {/* Navigation */}
         {user.isLoggedIn && (
           <nav className="hidden md:flex space-x-4">
-            <Link to={"/home"} className="text-gray-600 hover:text-gray-800">
+            <NavLink
+              to={"/home"}
+              className={({ isActive }) =>
+                isActive
+                  ? "text-gray-800 hover:text-gray-800"
+                  : "text-gray-600 hover:text-gray-800"
+              }
+            >
               Home
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to={"/favorite"}
-              className="text-gray-600 hover:text-gray-800"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-gray-800 hover:text-gray-800"
+                  : "text-gray-600 hover:text-gray-800"
+              }
             >
               Favorites
-            </Link>
+            </NavLink>
           </nav>
         )}
         {/* Login */}
@@ -42,54 +53,6 @@ export default function Header() {
           >
             {!user.isLoggedIn ? "Login" : "Logout"}
           </Link>
-        </div>
-        {/* Mobile menu button (hidden on larger screens) */}
-        <div className="md:hidden flex items-center">
-          <button
-            id="mobile-menu-button"
-            className="text-gray-600 hover:text-gray-800 focus:outline-none"
-          >
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path d="M4 6h16M4 12h16m-7 6h7"></path>
-            </svg>
-          </button>
-        </div>
-      </div>
-      {/* Mobile menu (hidden on larger screens) */}
-      <div id="mobile-menu" className="md:hidden bg-white">
-        <div className="px-4 py-2">
-          <a
-            href="#"
-            className="block text-gray-600 py-2 border-b border-gray-200"
-          >
-            Home
-          </a>
-          <a
-            href="#"
-            className="block text-gray-600 py-2 border-b border-gray-200"
-          >
-            About
-          </a>
-          <a
-            href="#"
-            className="block text-gray-600 py-2 border-b border-gray-200"
-          >
-            Services
-          </a>
-          <a
-            href="#"
-            className="block text-gray-600 py-2 border-b border-gray-200"
-          >
-            Contact
-          </a>
         </div>
       </div>
     </header>

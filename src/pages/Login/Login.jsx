@@ -12,7 +12,7 @@ export default function Login() {
   function handleSubmit(event) {
     event.preventDefault();
 
-    if (isValidEmail || userLogin?.user?.password) {
+    if (isValidEmail && userLogin?.user?.password) {
       navigate("/home");
       dispatch({
         type: "LOGIN",
@@ -40,12 +40,13 @@ export default function Login() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" onSubmit={handleSubmit}>
+        <form className="space-y-6" onSubmit={handleSubmit} role="form">
           <div>
             <CustomInput
               type="text"
               label={"Email Address"}
               name={"email"}
+              id={"email"}
               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 invalid:border-pink-500 invalid:text-pink-600
               focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
               labelClassName="after:content-['*'] after:ml-0.5 after:text-red-500"
@@ -58,8 +59,9 @@ export default function Login() {
           <div>
             <CustomInput
               type="password"
-              label={"Pasword"}
+              label={"password"}
               name={"password"}
+              id={"password"}
               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               labelClassName="after:content-['*'] after:ml-0.5 after:text-red-500"
               value={userLogin?.user?.password}

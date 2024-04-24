@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useMovies } from "../../hooks/useMovies";
 import Loading from "../../components/Loading/Loading";
 import Card from "../../components/Card/Card";
 import { truncateText } from "../../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import TypeaheadInput from "../../components/TypeaheadInput/TypeaheadInput";
+import { useMovies } from "../../hooks/useMovies";
 
 export default function Home() {
   const favoriteMovies = useSelector((state) => state.movies);
@@ -14,15 +14,6 @@ export default function Home() {
   const { movies, loading, error, getAllMovies, getMoviesFiltered } = useMovies(
     {}
   );
-
-  const handleScroll = useCallback(() => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop !==
-      document.documentElement.offsetHeight
-    )
-      return;
-    setPage((prevPage) => prevPage + 1);
-  }, []);
 
   function addToFavoriteHandler(event, movieID) {
     event.preventDefault();
@@ -34,7 +25,7 @@ export default function Home() {
   }
 
   function hasFavoriteBtn(movieID) {
-    return favoriteMovies.movies.length > 0 &&
+    return favoriteMovies?.movies?.length > 0 &&
       favoriteMovies.movies.filter(({ id }) => id === movieID).length > 0
       ? false
       : true;
@@ -43,6 +34,15 @@ export default function Home() {
   function onClickSuggestion(moviesFiltered) {
     getMoviesFiltered({ moviesFiltered });
   }
+
+  const handleScroll = useCallback(() => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop !==
+      document.documentElement.offsetHeight
+    )
+      return;
+    setPage((prevPage) => prevPage + 1);
+  }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -65,14 +65,12 @@ export default function Home() {
     <>
       <div className="flex items-center mb-6 justify-between">
         <h2 className="text-4xl font-extrabold dark:text-white">All Movies</h2>
-        <TypeaheadInput
-          onClickSuggestion={onClickSuggestion}
-        />
+        <TypeaheadInput onClickSuggestion={onClickSuggestion} />
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4" role="grid">
         {movies.length > 0 &&
           movies.map(({ id, title, overview, poster_path, release_date }) => (
-            <Link to={`/home/${id}`} key={id} target="_blank">
+            <Link to={`/home/${id}`} key={id}>
               <Card
                 title={title}
                 description={truncateText(overview)}
