@@ -63,7 +63,9 @@ export default function Home() {
   }
 
   function hasFavoriteBtn(movieID) {
-    return !(favoriteMovies?.movies?.filter(({ id }) => id === movieID).length > 0);
+    return !(
+      favoriteMovies?.movies?.filter(({ id }) => id === movieID).length > 0
+    );
   }
 
   function onClickSuggestion(moviesFiltered, title) {
@@ -103,19 +105,18 @@ export default function Home() {
         />
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4" role="grid">
-        {movies.length > 0 &&
-          movies.map(({ id, title, overview, poster_path, release_date }) => (
-            <Link to={`/home/${id}`} key={id}>
-              <Card
-                title={title}
-                description={truncateText(overview)}
-                image={poster_path}
-                releaseDate={release_date}
-                onClick={(event) => addToFavoriteHandler(event, id)}
-                shouldAddToFavorite={hasFavoriteBtn(id)}
-              />
-            </Link>
-          ))}
+        {movies.map(({ id, title, overview, poster_path, release_date }) => (
+          <Link to={`/home/${id}`} key={id}>
+            <Card
+              title={title}
+              description={truncateText(overview)}
+              image={poster_path}
+              releaseDate={release_date}
+              onClick={(event) => addToFavoriteHandler(event, id)}
+              shouldAddToFavorite={hasFavoriteBtn(id)}
+            />
+          </Link>
+        ))}
       </div>
     </>
   );
